@@ -9,15 +9,22 @@ fn main() {
     let mut expression = String::new();
     std::io::stdin().read_line(&mut expression).unwrap();
     // operations
-    let caps = re_add.captures(&expression.as_str()).unwrap();
-    let left_value: i32 = caps.get(1).unwrap().as_str().parse().unwrap();
-    let right_value: i32 = caps.get(2).unwrap().as_str().parse().unwrap();
-    // println!("{:?}", caps);
-    println!("{}", left_value);
-    println!("{}", right_value);
+    loop {
+        let caps = re_add.captures(&expression.as_str());
 
-    let result = left_value + right_value;
+        if caps.is_none() {
+            break;
+        }
+
+        let caps = caps.unwrap();
+
+        let cap_expression = caps.get(0).unwrap().as_str();
+
+        let left_value: i32 = caps.get(1).unwrap().as_str().parse().unwrap();
+        let right_value: i32 = caps.get(2).unwrap().as_str().parse().unwrap();
+        let addition = left_value + right_value;
+        expression = expression.replace(cap_expression, &addition.to_string());
+    }
     // output
-    println!("Tu expresion es: {}", expression);
-    println!("Tu resultado es: {}", result);
+    println!("Tu resultado es: {}", expression);
 }
